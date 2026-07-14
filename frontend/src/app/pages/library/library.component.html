@@ -1,0 +1,14 @@
+<section class="content-wrap simple-page">
+  <div class="page-heading">
+    <p>Library</p>
+    <h1>Your curated collection</h1>
+  </div>
+  <div class="library-grid">
+    <article *ngFor="let song of songs">
+      <img [src]="song.coverUrl" [alt]="song.title">
+      <h2>{{ song.title }}</h2>
+      <p>{{ song.artist }} • {{ song.album }}</p>
+      <span>{{ song.genre }}</span>
+    </article>
+  </div>
+</section>

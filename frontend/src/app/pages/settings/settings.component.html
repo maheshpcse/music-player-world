@@ -1,0 +1,65 @@
+<section class="settings-page content-wrap">
+  <div class="page-heading">
+    <p>Settings</p>
+    <h1>Account preferences</h1>
+  </div>
+
+  <div class="settings-shell">
+    <nav class="steps nav flex-column">
+      <button type="button" [class.active]="step === 1" (click)="step = 1">1 Profile</button>
+      <button type="button" [class.active]="step === 2" (click)="step = 2">2 Password</button>
+      <button type="button" [class.active]="step === 3" (click)="step = 3">3 Notifications</button>
+    </nav>
+
+    <form class="settings-card" *ngIf="step === 1" (ngSubmit)="saveProfile()">
+      <h2>Profile Information</h2>
+      <label class="form-field">
+        <i class="bi bi-person-badge"></i>
+        <input class="form-control" name="name" [(ngModel)]="user.name" placeholder="Full name">
+      </label>
+      <label class="form-field">
+        <i class="bi bi-telephone"></i>
+        <input class="form-control" name="phone" [(ngModel)]="user.phone" placeholder="Phone">
+      </label>
+      <label class="form-field">
+        <i class="bi bi-geo-alt"></i>
+        <input class="form-control" name="city" [(ngModel)]="user.city" placeholder="City">
+      </label>
+      <button class="primary-btn btn" type="submit" [disabled]="saving">Save and Continue</button>
+    </form>
+
+    <form class="settings-card" *ngIf="step === 2" (ngSubmit)="savePassword()">
+      <h2>Change Password</h2>
+      <label class="form-field">
+        <i class="bi bi-key"></i>
+        <input class="form-control" type="password" name="password" [(ngModel)]="password" placeholder="New password">
+      </label>
+      <label class="form-field">
+        <i class="bi bi-shield-lock"></i>
+        <input class="form-control" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Confirm password">
+      </label>
+      <button class="primary-btn btn" type="submit" [disabled]="saving">Update Password</button>
+    </form>
+
+    <form class="settings-card" *ngIf="step === 3" (ngSubmit)="saveNotifications()">
+      <h2>Notification Settings</h2>
+      <label class="toggle-row">
+        <span>
+          <strong>Email notifications</strong>
+          <small>Receive playlist and account updates.</small>
+        </span>
+        <input class="form-check-input" type="checkbox" name="emailNotifications" [(ngModel)]="user.emailNotifications">
+      </label>
+      <label class="toggle-row">
+        <span>
+          <strong>Push notifications</strong>
+          <small>Show reminders for new listening sessions.</small>
+        </span>
+        <input class="form-check-input" type="checkbox" name="pushNotifications" [(ngModel)]="user.pushNotifications">
+      </label>
+      <button class="primary-btn btn" type="submit" [disabled]="saving">Save Notifications</button>
+    </form>
+  </div>
+
+  <p class="message" *ngIf="message">{{ message }}</p>
+</section>

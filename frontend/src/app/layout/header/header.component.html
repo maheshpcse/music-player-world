@@ -1,0 +1,30 @@
+<header class="site-header navbar navbar-expand-lg">
+  <div class="brand">
+    <i class="bi bi-vinyl"></i>
+    <span>Music Player World</span>
+  </div>
+
+  <nav class="main-nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Welcome</a>
+    <a routerLink="/library" routerLinkActive="active">Library</a>
+    <a routerLink="/about" routerLinkActive="active">About</a>
+    <a routerLink="/contact" routerLinkActive="active">Contact</a>
+  </nav>
+
+  <div class="auth-actions" *ngIf="!authService.isLoggedIn()">
+    <a routerLink="/login">Login</a>
+    <a routerLink="/signup">Sign Up</a>
+  </div>
+
+  <div class="profile-menu" *ngIf="authService.isLoggedIn()">
+    <button class="profile-button" type="button" (click)="menuOpen = !menuOpen" title="User profile">
+      <i class="bi bi-person-circle"></i>
+    </button>
+    <div class="dropdown" *ngIf="menuOpen">
+      <a routerLink="/home" (click)="menuOpen = false"><i class="bi bi-boombox"></i> Player</a>
+      <a routerLink="/my-account" (click)="menuOpen = false"><i class="bi bi-person-lines-fill"></i> My Account</a>
+      <a routerLink="/settings" (click)="menuOpen = false"><i class="bi bi-sliders"></i> Settings</a>
+      <button type="button" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    </div>
+  </div>
+</header>

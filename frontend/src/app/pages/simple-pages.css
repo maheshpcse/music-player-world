@@ -1,0 +1,36 @@
+.simple-page,
+.settings-page {
+  padding: 48px 0;
+}
+
+.page-heading {
+  margin-bottom: 26px;
+}
+
+.page-heading p {
+  margin: 0 0 10px;
+  color: var(--accent-dark);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.05;
+}
+
+.text-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.text-panel p {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+}

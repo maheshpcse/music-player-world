@@ -1,0 +1,134 @@
+<section class="home-grid">
+  <nav class="home-mini-nav">
+    <a routerLink="/"><i class="bi bi-house-heart"></i> Website</a>
+    <a routerLink="/library"><i class="bi bi-music-note-list"></i> Library</a>
+    <a routerLink="/about"><i class="bi bi-info-circle"></i> About</a>
+    <a routerLink="/contact"><i class="bi bi-envelope-paper"></i> Contact</a>
+    <a routerLink="/my-account"><i class="bi bi-person-circle"></i> Profile</a>
+    <button type="button" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Sign out</button>
+  </nav>
+
+  <aside class="song-detail sticky-panel">
+    <div class="cover" [style.background-image]="'url(' + currentSong.coverUrl + ')'">
+      <span>{{ currentSong.genre }}</span>
+    </div>
+    <div class="song-meta">
+      <p>{{ isPlaying ? 'Currently Playing' : 'Ready to Play' }}</p>
+      <h2>{{ currentSong.title }}</h2>
+      <dl>
+        <div>
+          <dt>Artist</dt>
+          <dd>{{ currentSong.artist }}</dd>
+        </div>
+        <div>
+          <dt>Album</dt>
+          <dd>{{ currentSong.album }}</dd>
+        </div>
+        <div>
+          <dt>Duration</dt>
+          <dd>{{ format(currentSong.durationSeconds) }}</dd>
+        </div>
+      </dl>
+    </div>
+  </aside>
+
+  <section class="player-stage">
+    <div class="cassette-player">
+      <div class="player-top">
+        <span>Classic Walkman Session</span>
+        <i class="bi bi-soundwave"></i>
+      </div>
+      <audio
+        #audioPlayer
+        [src]="currentSong.audioUrl || ''"
+        (timeupdate)="updateProgress()"
+        (ended)="next()"
+        (loadedmetadata)="syncVolume()">
+      </audio>
+      <div class="cassette">
+        <div class="walkman-head">
+          <i class="bi bi-cassette"></i>
+          <span>WM-84</span>
+        </div>
+        <div class="cassette-label">
+          <span>{{ currentSong.title }}</span>
+          <small>{{ currentSong.artist }}</small>
+        </div>
+        <div class="song-pointer" [class.active]="isPlaying">
+          <i class="bi bi-caret-down-fill"></i>
+          <span>{{ isPlaying ? 'Playing this tape' : 'Tape selected' }}</span>
+        </div>
+        <div class="reel-row">
+          <div class="reel" [class.spinning]="isPlaying"><span></span></div>
+          <div class="tape-window"></div>
+          <div class="reel" [class.spinning]="isPlaying"><span></span></div>
+        </div>
+        <div class="cassette-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="progress">
+        <span>{{ format(currentTime) }}</span>
+        <div><i [style.width.%]="progressPercent()"></i></div>
+        <span>{{ format(currentSong.durationSeconds) }}</span>
+      </div>
+
+      <div class="controls">
+        <button class="icon-btn btn" type="button" (click)="previous()" title="Previous song">
+          <i class="bi bi-skip-backward-fill"></i>
+        </button>
+        <button class="play-btn btn" type="button" (click)="togglePlayback()" title="Play or pause">
+          <i class="bi" [ngClass]="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'"></i>
+        </button>
+        <button class="icon-btn btn" type="button" (click)="next()" title="Next song">
+          <i class="bi bi-skip-forward-fill"></i>
+        </button>
+      </div>
+
+      <label class="volume">
+        <i class="bi bi-volume-up-fill"></i>
+        <input class="form-range" type="range" min="0" max="100" [(ngModel)]="volume" (input)="syncVolume()">
+        <span>{{ volume }}%</span>
+      </label>
+    </div>
+  </section>
+
+  <aside class="library-panel sticky-panel">
+    <div class="library-tools">
+      <label class="form-field">
+        <i class="bi bi-search-heart"></i>
+        <input class="form-control" type="search" [(ngModel)]="search" placeholder="Search songs">
+      </label>
+      <div class="genre-picker" [class.open]="genreMenuOpen" (mouseleave)="closeGenreMenu()">
+        <button class="genre-button" type="button" (click)="genreMenuOpen = !genreMenuOpen">
+          <i class="bi bi-funnel"></i>
+          <span>{{ selectedGenre }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="genre-menu" *ngIf="genreMenuOpen">
+          <button type="button" *ngFor="let genre of genres" (click)="selectGenre(genre)" [class.active]="genre === selectedGenre">
+            <span>{{ genre }}</span>
+            <i class="bi bi-check2" *ngIf="genre === selectedGenre"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="loading-state" *ngIf="loading">
+      <span class="music-loader"><i></i><i></i><i></i></span>
+      Loading songs
+    </div>
+    <div class="song-list">
+      <button type="button" *ngFor="let song of filteredSongs" (click)="selectSong(song)" [class.active]="song.id === currentSong.id">
+        <img [src]="song.coverUrl" [alt]="song.title">
+        <span>
+          <strong>{{ song.title }}</strong>
+          <small>{{ song.artist }} | {{ song.genre }}</small>
+        </span>
+        <em>{{ format(song.durationSeconds) }}</em>
+      </button>
+    </div>
+  </aside>
+</section>

@@ -1,0 +1,22 @@
+<section class="content-wrap simple-page contact-page">
+  <div class="page-heading">
+    <p>Contact</p>
+    <h1>Tell us what your music room needs</h1>
+  </div>
+  <form class="text-panel" (ngSubmit)="sent = true">
+    <label class="form-field">
+      <i class="bi bi-person-badge"></i>
+      <input class="form-control" name="name" placeholder="Your name">
+    </label>
+    <label class="form-field">
+      <i class="bi bi-envelope-at"></i>
+      <input class="form-control" name="email" placeholder="Email address">
+    </label>
+    <label class="form-field textarea-field">
+      <i class="bi bi-chat-left-text"></i>
+      <textarea class="form-control" name="message" placeholder="Message"></textarea>
+    </label>
+    <button class="primary-btn btn" type="submit">Send Message</button>
+    <p class="success" *ngIf="sent">Thanks, your message has been prepared.</p>
+  </form>
+</section>

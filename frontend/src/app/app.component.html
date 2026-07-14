@@ -1,0 +1,5 @@
+<app-header *ngIf="showChrome"></app-header>
+<main class="page-shell" [class.chromeless]="!showChrome">
+  <router-outlet></router-outlet>
+</main>
+<app-footer *ngIf="showChrome"></app-footer>

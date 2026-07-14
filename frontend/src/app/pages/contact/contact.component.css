@@ -1,0 +1,10 @@
+@import '../simple-pages.css';
+
+.contact-page form {
+  max-width: 620px;
+}
+
+.success {
+  color: var(--accent-dark);
+  font-weight: 800;
+}

@@ -1,0 +1,39 @@
+<section class="auth-page">
+  <div class="auth-copy">
+    <p>Designed for focused listening</p>
+    <h1 class="stream-title typing-title" aria-label="Welcome To Music Player World">
+      <span class="title-word" *ngFor="let word of titleWords; let wordIndex = index">
+        <span class="title-letter" *ngFor="let char of word.split(''); let charIndex = index" [style.animation-delay.ms]="(wordIndex * 7 + charIndex) * 55">{{ char }}</span>
+      </span>
+    </h1>
+    <span>Build your profile, organize your sound library, and step into a refined music player experience.</span>
+  </div>
+
+  <form class="auth-card needs-validation" (ngSubmit)="signup()">
+    <h2>Sign Up</h2>
+    <p>Create your personal music profile.</p>
+    <label class="form-field">
+      <i class="bi bi-person-badge"></i>
+      <input class="form-control" type="text" name="name" [(ngModel)]="name" placeholder="Full name">
+    </label>
+    <label class="form-field">
+      <i class="bi bi-envelope-at"></i>
+      <input class="form-control" type="email" name="email" [(ngModel)]="email" placeholder="Email address">
+    </label>
+    <label class="form-field">
+      <i class="bi bi-key"></i>
+      <input class="form-control" [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password">
+      <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+      </button>
+    </label>
+    <small class="error" *ngIf="error">{{ error }}</small>
+    <button class="primary-btn btn" type="submit" [disabled]="loading">
+      <span *ngIf="loading" class="music-loader"><i></i><i></i><i></i></span>
+      Create Account
+    </button>
+    <span class="switch-link">Already a member? <a routerLink="/login">Login</a></span>
+  </form>
+</section>
+
+
