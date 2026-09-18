@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface AppUser {
   id: number;
@@ -15,7 +16,7 @@ export interface AppUser {
 
 const USER_KEY = 'music_player_user';
 const TOKEN_KEY = 'music_player_token';
-const API_URL = 'http://localhost:5000/api';
+const API_URL = environment.apiUrl;
 
 interface AuthResponse {
   user: AppUser;

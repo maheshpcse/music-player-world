@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { Song } from './song.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface SongPayload {
   title: string;
@@ -18,7 +19,7 @@ export interface SongPayload {
 
 @Injectable({ providedIn: 'root' })
 export class MusicService {
-  private readonly apiUrl = 'http://localhost:5000/api/songs';
+  private readonly apiUrl = environment.apiUrl + '/songs';
   private readonly selectedSongSubject = new BehaviorSubject<Song | null>(null);
   selectedSong$ = this.selectedSongSubject.asObservable();
 

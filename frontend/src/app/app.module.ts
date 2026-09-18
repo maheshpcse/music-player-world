@@ -18,6 +18,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AuthGuard } from './shared/auth.guard';
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -54,7 +55,7 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { useHash: environment.useHashRouting })
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

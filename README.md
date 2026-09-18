@@ -28,3 +28,14 @@ npm run migrate --prefix backend
 npm run seed --prefix backend
 ```
 
+
+## Deploy to GitHub Pages
+
+See [the deployment guide](docs/github-pages-deployment.md) for the GitHub Actions
+workflow, live API configuration, and local production build instructions.
+GitHub Pages hosts the frontend; the backend and database need separate hosting.
+
+## Deploy the backend to Railway
+
+See [the Railway deployment guide](docs/railway-deployment.md) for Docker deployment,
+MySQL variables, migrations, persistent uploads, and the GitHub Pages connection.
