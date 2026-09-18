@@ -5,16 +5,20 @@
     <p>{{ user.email }}</p>
     <dl>
       <div>
+        <dt>Name</dt>
+        <dd>{{ user.name || 'Not added' }}</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>{{ user.email || 'Not added' }}</dd>
+      </div>
+      <div>
         <dt>Phone</dt>
         <dd>{{ user.phone || 'Not added' }}</dd>
       </div>
       <div>
-        <dt>City</dt>
+        <dt>Address</dt>
         <dd>{{ user.city || 'Not added' }}</dd>
-      </div>
-      <div>
-        <dt>Email Alerts</dt>
-        <dd>{{ user.emailNotifications ? 'Enabled' : 'Disabled' }}</dd>
       </div>
     </dl>
   </div>

@@ -1,30 +1,46 @@
-<header class="site-header navbar navbar-expand-lg">
-  <div class="brand">
-    <i class="bi bi-vinyl"></i>
-    <span>Music Player World</span>
-  </div>
+<header class="home-route-nav">
+  <nav class="home-mini-nav">
+    <a routerLink="/home" routerLinkActive="active">
+      <i class="bi bi-boombox"></i> Player
+    </a>
+    <a routerLink="/library" routerLinkActive="active">
+      <i class="bi bi-music-note-list"></i> Library
+    </a>
+    <a routerLink="/about" routerLinkActive="active">
+      <i class="bi bi-info-circle"></i> About
+    </a>
+    <a routerLink="/contact" routerLinkActive="active">
+      <i class="bi bi-envelope-paper"></i> Contact
+    </a>
 
-  <nav class="main-nav">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Welcome</a>
-    <a routerLink="/library" routerLinkActive="active">Library</a>
-    <a routerLink="/about" routerLinkActive="active">About</a>
-    <a routerLink="/contact" routerLinkActive="active">Contact</a>
-  </nav>
+    <a *ngIf="authService.isLoggedIn()" routerLink="/my-account" [class.active]="isProfileRoute">
+      <i class="bi bi-person-circle"></i> Profile
+    </a>
 
-  <div class="auth-actions" *ngIf="!authService.isLoggedIn()">
-    <a routerLink="/login">Login</a>
-    <a routerLink="/signup">Sign Up</a>
-  </div>
-
-  <div class="profile-menu" *ngIf="authService.isLoggedIn()">
-    <button class="profile-button" type="button" (click)="menuOpen = !menuOpen" title="User profile">
-      <i class="bi bi-person-circle"></i>
-    </button>
-    <div class="dropdown" *ngIf="menuOpen">
-      <a routerLink="/home" (click)="menuOpen = false"><i class="bi bi-boombox"></i> Player</a>
-      <a routerLink="/my-account" (click)="menuOpen = false"><i class="bi bi-person-lines-fill"></i> My Account</a>
-      <a routerLink="/settings" (click)="menuOpen = false"><i class="bi bi-sliders"></i> Settings</a>
-      <button type="button" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    <div
+      class="profile-tab-menu"
+      *ngIf="authService.isLoggedIn()"
+      (mouseenter)="cancelMenuClose()"
+      (mouseleave)="scheduleMenuClose()">
+      <button type="button" class="profile-arrow-button" (click)="toggleMenu()" [class.active]="menuOpen || isProfileRoute" title="Profile menu">
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <div class="profile-tab-dropdown" *ngIf="menuRendered" [class.open]="menuOpen" (mouseenter)="cancelMenuClose()" (mouseleave)="scheduleMenuClose()">
+        <a routerLink="/my-account" routerLinkActive="active" (click)="closeMenu()">
+          <i class="bi bi-person-lines-fill"></i> My Account
+        </a>
+        <a routerLink="/settings" routerLinkActive="active" (click)="closeMenu()">
+          <i class="bi bi-sliders"></i> Settings
+        </a>
+        <button type="button" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+        </button>
+      </div>
     </div>
-  </div>
+
+    <div class="auth-route-actions" *ngIf="!authService.isLoggedIn()">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/signup">Sign Up</a>
+    </div>
+  </nav>
 </header>

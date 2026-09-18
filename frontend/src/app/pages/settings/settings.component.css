@@ -1,6 +1,8 @@
 @import '../simple-pages.css';
 
 .settings-shell {
+  min-height: 0;
+  overflow-y: auto;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 22px;
@@ -8,17 +10,14 @@
 
 .steps,
 .settings-card {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: var(--shadow);
+  background: transparent;
 }
 
 .steps {
   display: grid;
   align-content: start;
   gap: 8px;
-  padding: 14px;
+  padding: 0;
 }
 
 .steps button {
@@ -30,17 +29,30 @@
   font-weight: 800;
   text-align: left;
   padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
   transition: background 0.24s ease, color 0.24s ease, transform 0.24s ease;
+}
+
+.steps button i {
+  color: var(--deep-saffron);
+  font-size: 1.08rem;
 }
 
 .steps button.active {
   color: #fff;
   background: var(--nocturnal);
-  transform: translateX(4px);
+  /* transform: translateX(4px); */
+}
+
+.steps button.active i {
+  color: var(--forsytha);
 }
 
 .settings-card {
-  padding: 26px;
+  padding: 0;
   animation: settingsFade 0.24s ease both;
 }
 
@@ -55,10 +67,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+  margin-bottom: 0;
+}
+
+.toggle-row:first-of-type {
+  border-top: 1px solid var(--line);
 }
 
 .toggle-row small {
@@ -71,6 +86,10 @@
   width: 46px;
   height: 24px;
   accent-color: var(--deep-saffron);
+}
+
+.settings-card .primary-btn {
+  margin-top: 18px;
 }
 
 .message {

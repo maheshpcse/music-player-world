@@ -110,7 +110,7 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem(USER_KEY);
     sessionStorage.removeItem(TOKEN_KEY);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   private persistSession(user: AppUser, token: string, remember: boolean): void {

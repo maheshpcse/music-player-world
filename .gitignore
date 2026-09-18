@@ -17,6 +17,12 @@ dist/
 .angular/
 .cache/
 
+# Local uploaded media
+backend/uploads/songs/*
+!backend/uploads/songs/.gitkeep
+backend/uploads/audio/*
+!backend/uploads/audio/.gitkeep
+
 # OS/editor files
 .DS_Store
 Thumbs.db

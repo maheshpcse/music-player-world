@@ -19,6 +19,7 @@
     "@angular/router": "^14.3.0",
     "music-player-application": "file:..",
     "rxjs": "~7.5.7",
+    "sweetalert2": "^11.26.25",
     "tslib": "^2.4.1",
     "zone.js": "~0.11.8"
   },

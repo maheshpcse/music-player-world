@@ -3,7 +3,7 @@
     <p>Contact</p>
     <h1>Tell us what your music room needs</h1>
   </div>
-  <form class="text-panel" (ngSubmit)="sent = true">
+  <form class="text-panel" (ngSubmit)="sendMessage()">
     <label class="form-field">
       <i class="bi bi-person-badge"></i>
       <input class="form-control" name="name" placeholder="Your name">
@@ -16,7 +16,11 @@
       <i class="bi bi-chat-left-text"></i>
       <textarea class="form-control" name="message" placeholder="Message"></textarea>
     </label>
-    <button class="primary-btn btn" type="submit">Send Message</button>
+    <button class="primary-btn btn" type="submit" [disabled]="saving">
+      <span class="button-loader" *ngIf="saving"><i></i><i></i><i></i></span>
+      <i class="bi bi-check2-circle" *ngIf="!saving"></i>
+      {{ saving ? 'Sending...' : 'Send Message' }}
+    </button>
     <p class="success" *ngIf="sent">Thanks, your message has been prepared.</p>
   </form>
 </section>

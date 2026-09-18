@@ -15,7 +15,17 @@ function createSongRepository(knex) {
 
       return query;
     },
-    findById: (id) => knex('songs').where({ id }).first()
+    findById: (id) => knex('songs').where({ id }).first(),
+    findByAudioUrl: (audioUrl) => knex('songs').where({ audio_url: audioUrl }).first(),
+    create: async (song) => {
+      const [id] = await knex('songs').insert(song);
+      return knex('songs').where({ id }).first();
+    },
+    updateById: async (id, song) => {
+      await knex('songs').where({ id }).update(song);
+      return knex('songs').where({ id }).first();
+    },
+    deleteById: (id) => knex('songs').where({ id }).del()
   };
 }
 

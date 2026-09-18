@@ -1,15 +1,6 @@
-<section class="home-grid">
-  <nav class="home-mini-nav">
-    <a routerLink="/"><i class="bi bi-house-heart"></i> Website</a>
-    <a routerLink="/library"><i class="bi bi-music-note-list"></i> Library</a>
-    <a routerLink="/about"><i class="bi bi-info-circle"></i> About</a>
-    <a routerLink="/contact"><i class="bi bi-envelope-paper"></i> Contact</a>
-    <a routerLink="/my-account"><i class="bi bi-person-circle"></i> Profile</a>
-    <button type="button" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Sign out</button>
-  </nav>
-
-  <aside class="song-detail sticky-panel">
-    <div class="cover" [style.background-image]="'url(' + currentSong.coverUrl + ')'">
+<section class="home-grid player-only">
+  <aside class="song-detail sticky-panel slide-panel">
+    <div class="cover" [style.background-image]="'url(' + (currentSong.coverUrl || defaultCoverUrl) + ')'">
       <span>{{ currentSong.genre }}</span>
     </div>
     <div class="song-meta">
@@ -18,11 +9,11 @@
       <dl>
         <div>
           <dt>Artist</dt>
-          <dd>{{ currentSong.artist }}</dd>
+          <dd>{{ currentSong.artist || 'Unknown Artist' }}</dd>
         </div>
         <div>
           <dt>Album</dt>
-          <dd>{{ currentSong.album }}</dd>
+          <dd>{{ currentSong.album || 'Music Player World' }}</dd>
         </div>
         <div>
           <dt>Duration</dt>
@@ -32,7 +23,7 @@
     </div>
   </aside>
 
-  <section class="player-stage">
+  <section class="player-stage slide-panel">
     <div class="cassette-player">
       <div class="player-top">
         <span>Classic Walkman Session</span>
@@ -54,10 +45,6 @@
           <span>{{ currentSong.title }}</span>
           <small>{{ currentSong.artist }}</small>
         </div>
-        <div class="song-pointer" [class.active]="isPlaying">
-          <i class="bi bi-caret-down-fill"></i>
-          <span>{{ isPlaying ? 'Playing this tape' : 'Tape selected' }}</span>
-        </div>
         <div class="reel-row">
           <div class="reel" [class.spinning]="isPlaying"><span></span></div>
           <div class="tape-window"></div>
@@ -72,7 +59,9 @@
 
       <div class="progress">
         <span>{{ format(currentTime) }}</span>
-        <div><i [style.width.%]="progressPercent()"></i></div>
+        <button class="progress-track" type="button" (click)="seek($event)" title="Seek song">
+          <i [style.width.%]="progressPercent()"></i>
+        </button>
         <span>{{ format(currentSong.durationSeconds) }}</span>
       </div>
 
@@ -96,19 +85,19 @@
     </div>
   </section>
 
-  <aside class="library-panel sticky-panel">
+  <aside class="library-panel sticky-panel slide-panel">
     <div class="library-tools">
       <label class="form-field">
         <i class="bi bi-search-heart"></i>
         <input class="form-control" type="search" [(ngModel)]="search" placeholder="Search songs">
       </label>
-      <div class="genre-picker" [class.open]="genreMenuOpen" (mouseleave)="closeGenreMenu()">
-        <button class="genre-button" type="button" (click)="genreMenuOpen = !genreMenuOpen">
+      <div class="genre-picker" [class.open]="genreMenuOpen" (mouseenter)="cancelGenreClose()" (mouseleave)="scheduleGenreClose()">
+        <button class="genre-button" type="button" (click)="toggleGenreMenu()">
           <i class="bi bi-funnel"></i>
           <span>{{ selectedGenre }}</span>
           <i class="bi bi-chevron-down"></i>
         </button>
-        <div class="genre-menu" *ngIf="genreMenuOpen">
+        <div class="genre-menu" *ngIf="genreMenuRendered" [class.open]="genreMenuOpen" (mouseenter)="cancelGenreClose()" (mouseleave)="scheduleGenreClose()">
           <button type="button" *ngFor="let genre of genres" (click)="selectGenre(genre)" [class.active]="genre === selectedGenre">
             <span>{{ genre }}</span>
             <i class="bi bi-check2" *ngIf="genre === selectedGenre"></i>
@@ -122,10 +111,10 @@
     </div>
     <div class="song-list">
       <button type="button" *ngFor="let song of filteredSongs" (click)="selectSong(song)" [class.active]="song.id === currentSong.id">
-        <img [src]="song.coverUrl" [alt]="song.title">
+        <img [src]="song.coverUrl || defaultCoverUrl" [alt]="song.title" (error)="($any($event.target).src = defaultCoverUrl)">
         <span>
           <strong>{{ song.title }}</strong>
-          <small>{{ song.artist }} | {{ song.genre }}</small>
+          <small>{{ song.artist || 'Unknown Artist' }} | {{ song.genre || 'Local' }}</small>
         </span>
         <em>{{ format(song.durationSeconds) }}</em>
       </button>

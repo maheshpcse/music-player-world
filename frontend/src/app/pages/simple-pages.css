@@ -1,10 +1,22 @@
 .simple-page,
 .settings-page {
-  padding: 48px 0;
+  width: min(1808px, calc(100% - 112px));
+  margin: 0 auto;
+  min-height: calc(100vh - 132px);
+  max-height: calc(100vh - 132px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .page-heading {
-  margin-bottom: 26px;
+  flex: 0 0 auto;
+  margin-bottom: 18px;
 }
 
 .page-heading p {
@@ -17,16 +29,13 @@
 
 .page-heading h1 {
   margin: 0;
-  font-size: clamp(32px, 5vw, 54px);
+  font-size: clamp(28px, 3.6vw, 42px);
   line-height: 1.05;
 }
 
 .text-panel {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 28px;
-  background: #fff;
-  box-shadow: var(--shadow);
+  padding: 0;
+  background: transparent;
 }
 
 .text-panel p {

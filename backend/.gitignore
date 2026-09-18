@@ -10,6 +10,12 @@ node_modules/
 logs/
 *.log
 
+# Uploaded media files; keep folder placeholders only
+uploads/audio/*
+!uploads/audio/.gitkeep
+uploads/songs/*
+!uploads/songs/.gitkeep
+
 # Accidental nested npm install artifacts
 backend/
 

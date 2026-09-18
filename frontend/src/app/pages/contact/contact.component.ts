@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class ContactComponent {
   sent = false;
+
+  saving = false;
+
+  sendMessage(): void {
+    this.sent = false;
+    this.saving = true;
+    setTimeout(() => {
+      this.saving = false;
+      this.sent = true;
+    }, 700);
+  }
 }

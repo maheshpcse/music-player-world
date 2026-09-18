@@ -1,18 +1,23 @@
 .account-page {
-  min-height: calc(100vh - 128px);
+  width: min(1808px, calc(100% - 112px));
+  min-height: calc(100vh - 132px);
+  max-height: calc(100vh - 132px);
   display: grid;
   place-items: center;
-  padding: 32px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  overflow-y: auto;
 }
 
 .account-card {
-  width: min(100%, 460px);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 34px;
-  background: #fff;
+  width: min(100%, 760px);
+  padding: 20px 0;
+  background: transparent;
   text-align: center;
-  box-shadow: var(--shadow);
 }
 
 .avatar {
@@ -31,6 +36,7 @@ h1 {
   margin: 0 0 8px;
   color: var(--nocturnal);
   font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 3.4vw, 42px);
 }
 
 p {

@@ -1,14 +1,184 @@
-<section class="content-wrap simple-page">
+<section #libraryPage class="content-wrap simple-page">
   <div class="page-heading">
     <p>Library</p>
     <h1>Your curated collection</h1>
   </div>
-  <div class="library-grid">
-    <article *ngFor="let song of songs">
-      <img [src]="song.coverUrl" [alt]="song.title">
-      <h2>{{ song.title }}</h2>
-      <p>{{ song.artist }} • {{ song.album }}</p>
-      <span>{{ song.genre }}</span>
-    </article>
+
+  <div class="library-nav-row">
+    <div class="library-switch">
+      <button type="button" [class.active]="libraryMode === 'list'" (click)="openLibraryMode('list')">
+        <i class="bi bi-music-note-list"></i> Songs List
+      </button>
+      <button type="button" [class.active]="libraryMode === 'form'" (click)="openLibraryMode('form')">
+        <i class="bi bi-database-add"></i> Add Song
+      </button>
+      <button type="button" [class.active]="libraryMode === 'upload'" (click)="openLibraryMode('upload')">
+        <i class="bi bi-cloud-arrow-up"></i> Upload Song
+      </button>
+    </div>
+
+    <div class="library-filter-bar" *ngIf="libraryMode === 'list'">
+      <div class="library-filter-picker" [class.open]="genreFilterMenuOpen" (mouseenter)="cancelGenreFilterClose()" (mouseleave)="scheduleGenreFilterClose()">
+        <button class="library-filter-button" type="button" (click)="toggleGenreFilterMenu()">
+          <i class="bi bi-funnel"></i>
+          <span>{{ listGenreFilter }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="library-filter-menu" *ngIf="genreFilterMenuRendered" [class.open]="genreFilterMenuOpen" (mouseenter)="cancelGenreFilterClose()" (mouseleave)="scheduleGenreFilterClose()">
+          <button type="button" *ngFor="let genre of listGenres" (click)="selectListGenre(genre)" [class.active]="genre === listGenreFilter">
+            <span>{{ genre }}</span>
+            <i class="bi bi-check2" *ngIf="genre === listGenreFilter"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="library-filter-picker" [class.open]="typeFilterMenuOpen" (mouseenter)="cancelTypeFilterClose()" (mouseleave)="scheduleTypeFilterClose()">
+        <button class="library-filter-button" type="button" (click)="toggleTypeFilterMenu()">
+          <i class="bi bi-vinyl"></i>
+          <span>{{ listTypeFilter }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="library-filter-menu" *ngIf="typeFilterMenuRendered" [class.open]="typeFilterMenuOpen" (mouseenter)="cancelTypeFilterClose()" (mouseleave)="scheduleTypeFilterClose()">
+          <button type="button" *ngFor="let type of listSongTypes" (click)="selectListType(type)" [class.active]="type === listTypeFilter">
+            <span>{{ type }}</span>
+            <i class="bi bi-check2" *ngIf="type === listTypeFilter"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div #libraryFlip class="library-flip" [class.show-form]="libraryMode === 'form'" [class.show-upload]="libraryMode === 'upload'">
+    <div class="library-face library-list-face">
+      <div class="library-list-scroll">
+        <div class="library-grid">
+          <article *ngFor="let song of filteredLibrarySongs" role="button" tabindex="0" (click)="playSong(song)" (keyup.enter)="playSong(song)">
+            <img [src]="song.coverUrl || defaultCoverUrl" [alt]="song.title" (error)="($any($event.target).src = defaultCoverUrl)">
+            <h2>{{ song.title }}</h2>
+            <p>{{ song.artist || 'Unknown Artist' }} | {{ song.album || 'Music Player World' }}</p>
+            <span>{{ song.genre || 'Local' }}</span>
+            <button class="card-play-btn" type="button" title="Play song" (click)="playSong(song); $event.stopPropagation()">
+              <i class="bi bi-play-fill"></i>
+            </button>
+            <div class="song-card-actions">
+              <button type="button" title="Edit song" (click)="editSong(song, $event)">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button type="button" title="Delete song" (click)="deleteSong(song, $event)">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="library-face library-form-face">
+      <div class="library-tools-panel">
+        <form class="song-form">
+          <div class="form-heading">
+            <h2>{{ editingSongId ? 'Edit song details' : 'Add song details' }}</h2>
+            <span>{{ editingSongId ? 'Update the saved song metadata.' : 'Save song metadata for an existing audio URL.' }}</span>
+          </div>
+
+          <label class="form-field">
+            <i class="bi bi-music-note-beamed"></i>
+            <input class="form-control" name="title" [(ngModel)]="songForm.title" placeholder="Song title">
+          </label>
+          <label class="form-field">
+            <i class="bi bi-person-vcard"></i>
+            <input class="form-control" name="artist" [(ngModel)]="songForm.artist" placeholder="Artist">
+          </label>
+          <label class="form-field">
+            <i class="bi bi-disc"></i>
+            <input class="form-control" name="album" [(ngModel)]="songForm.album" placeholder="Album">
+          </label>
+          <label class="form-field">
+            <i class="bi bi-soundwave"></i>
+            <select class="form-select" name="genre" [(ngModel)]="songForm.genre">
+              <option value="" disabled>Song Genre</option>
+              <option *ngFor="let genre of songGenres" [value]="genre">{{ genre }}</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <i class="bi bi-vinyl"></i>
+            <select class="form-select" name="songType" [(ngModel)]="songForm.songType">
+              <option *ngFor="let type of songTypes" [value]="type">{{ type }}</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <i class="bi bi-clock"></i>
+            <input class="form-control" type="number" min="0" name="durationSeconds" [(ngModel)]="songForm.durationSeconds" placeholder="Duration in seconds">
+          </label>
+          <label class="form-field">
+            <i class="bi bi-image"></i>
+            <input class="form-control" name="coverUrl" [(ngModel)]="songForm.coverUrl" placeholder="Cover image URL">
+          </label>
+          <label class="form-field">
+            <i class="bi bi-link-45deg"></i>
+            <input class="form-control" name="audioUrl" [(ngModel)]="songForm.audioUrl" placeholder="Existing audio URL or /uploads/songs/file.mp3">
+          </label>
+
+          <div class="library-actions">
+            <button class="secondary-btn btn" type="button" [disabled]="saving" (click)="resetSongForm()">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button class="primary-btn btn" type="button" [disabled]="saving" (click)="saveMetadata()">
+              <span class="button-loader" *ngIf="saving"><i></i><i></i><i></i></span>
+              <i class="bi" *ngIf="!saving" [ngClass]="editingSongId ? 'bi-check2-circle' : 'bi-database-add'"></i>
+              {{ saving ? (editingSongId ? 'Updating...' : 'Saving...') : (editingSongId ? 'Update' : 'Save') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="library-face library-upload-face">
+      <div class="library-tools-panel">
+        <form class="song-form upload-song-form">
+          <div class="form-heading">
+            <h2>Upload song details</h2>
+            <span>Choose an audio file, review the preview, then save it into the library.</span>
+          </div>
+
+          <div class="upload-workspace">
+            <div class="upload-control-pane">
+              <label class="file-picker upload-drop">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <span>{{ selectedAudio?.name || 'Choose audio file for local upload' }}</span>
+                <small>MP3, WAV, OGG, M4A, AAC, FLAC, WEBM</small>
+                <input #audioInput type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.webm" (change)="onAudioSelected($event)">
+              </label>
+
+              <div class="upload-actions">
+                <button class="secondary-btn btn" type="button" [disabled]="saving" (click)="resetSongForm()">
+                  <i class="bi bi-arrow-counterclockwise"></i> Reset
+                </button>
+                <button class="primary-btn btn" type="button" [disabled]="saving" (click)="confirmUpload()">
+                  <span class="button-loader" *ngIf="saving"><i></i><i></i><i></i></span>
+                  <i class="bi bi-cloud-arrow-up" *ngIf="!saving"></i>
+                  {{ saving ? 'Saving...' : 'Save' }}
+                </button>
+              </div>
+            </div>
+
+            <div class="upload-preview" [class.empty]="!uploadPreview">
+              <ng-container *ngIf="uploadPreview; else emptyPreview">
+                <img [src]="songForm.coverUrl || previewImage" [alt]="songForm.title || 'Song preview'">
+                <div>
+                  <span>Ready to save</span>
+                  <strong>{{ songForm.title }}</strong>
+                  <small>{{ songForm.artist }} | {{ songForm.album || 'No album' }}</small>
+                  <small>{{ songForm.genre }} | {{ songForm.songType }}</small>
+                  <small>{{ selectedAudio?.name }}</small>
+                </div>
+              </ng-container>
+              <ng-template #emptyPreview>
+              </ng-template>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </section>

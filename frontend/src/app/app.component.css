@@ -2,6 +2,86 @@
   display: block;
 }
 
+.route-frame {
+  position: relative;
+  min-height: 100vh;
+}
+
+.page-shell {
+  overflow-x: hidden;
+}
+
+.page-shell:not(.chromeless) {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 200, 1, 0.16), transparent 30%),
+    linear-gradient(135deg, var(--arctic-powder), var(--mystic-mint));
+}
+
+.page-shell:not(.chromeless) .route-frame {
+  padding-top: 84px;
+}
+
 .page-shell.chromeless {
   min-height: 100vh;
+}
+
+.page-shell .route-frame.slide-left.route-tick-a {
+  animation: routeSlideLeftA 0.32s ease both;
+}
+
+.page-shell .route-frame.slide-left.route-tick-b {
+  animation: routeSlideLeftB 0.32s ease both;
+}
+
+.page-shell .route-frame.slide-right.route-tick-a {
+  animation: routeSlideRightA 0.32s ease both;
+}
+
+.page-shell .route-frame.slide-right.route-tick-b {
+  animation: routeSlideRightB 0.32s ease both;
+}
+
+@keyframes routeSlideLeftA {
+  from {
+    opacity: 0;
+    transform: translateX(34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes routeSlideLeftB {
+  from {
+    opacity: 0;
+    transform: translateX(34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes routeSlideRightA {
+  from {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes routeSlideRightB {
+  from {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
